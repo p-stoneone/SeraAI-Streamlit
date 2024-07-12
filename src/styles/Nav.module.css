@@ -1,0 +1,53 @@
+.navbarBrand img {
+    margin-right: 20px;
+}
+
+.nav-bg{
+  background-color: #F7FAFC;
+}
+
+.nav-link {
+  position: relative;
+  margin: 0% 2% 0% 1%;
+  color: #231F20;
+  }
+
+.nav-link a{
+  color: #231F20;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: currentColor;
+    visibility: hidden;
+    transition: all 0.4s ease-in-out;
+    /* font-size: 5rem; */
+  }
+
+  .nav-link:hover::after {
+    visibility: visible;
+    width: 100%;
+  }
+
+  /* @media screen and (max-width: 376px){
+    .navbarBrand img {
+      height: 50%;  
+      width: 70%;
+    }
+  } */
+  
+
+  /* @media screen and (min-width: 1200px) {
+    .nav-link {
+      padding: 0 0 8px 0;
+    }
+
+    .nav-link a{
+      padding: 0 0 8px 0;
+    }
+  } */

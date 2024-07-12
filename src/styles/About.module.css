@@ -1,0 +1,64 @@
+  .about-add{
+    background-color: #F7FAFC;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .about h1{
+    font-size: 3rem;
+    font-weight: normal;
+    color: #181918;
+    margin-left : 5%;
+    padding: 5% 0% 5% 0%;
+  }
+  
+  .about h3{
+    text-align: justify;
+  }
+  
+  .about h5{
+    text-align: justify;
+  }
+  
+  .about p{
+    text-align: justify;
+  }
+  
+  .about ul{
+    padding-left: 2%;
+    text-align: justify;
+  }
+  .about ol{
+    padding-left: 2%;
+    text-align: justify;
+  }
+
+  @media screen and (max-width: 767px) {
+    .about-section img{
+      display: none;
+    }
+
+    .about-section{
+      padding: 0 5% 0 5%;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .about-section {
+      display: flex;
+      align-items: center; 
+      justify-content: center;
+    }
+  
+      .about-rightcontent {
+          margin: auto;
+          margin-left: 5%;
+      }
+      .about-leftcontent {
+          margin: auto;
+      }
+  
+    .imgsvg{
+      margin-left : 5%;
+    }
+  }
+  

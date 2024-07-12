@@ -1,0 +1,42 @@
+.bcrumb{
+    padding: 2% 0% 2% 5%;
+    color: #181918;
+}
+
+.bcrumb hover{
+    color:black
+}
+
+.link:hover {
+    color: black !important;
+}
+
+.aboutadd{
+    background-color: #F7FAFC;
+    /* background-color: aliceblue; */
+  }
+  
+  .about h1{
+    font-size: 3rem;
+      font-weight: normal;
+      font-family: "Gotham A", "Gotham B", helvetica, arial, sans-serif;;
+      color: #181918;
+      margin-left : 5%;
+      padding: 1% 0% 1% 0%;
+  }
+  
+  .about h3{
+    padding-left: 5%;
+    text-align: justify;
+  }
+  
+  .about p{
+    padding-left: 5%;
+    text-align: justify;
+  }
+  
+  .about ul{
+    padding-left: 7%;
+    text-align: justify;
+  }
+  
