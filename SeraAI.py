@@ -91,12 +91,12 @@ st.set_page_config(
     page_icon="imgs/sera_ai_fav.png",
     initial_sidebar_state="auto",
     menu_items={
-        "Get help": "https://github.com/p-stoneone/seraphicadvisors",
-        "Report a bug": "https://github.com/p-stoneone/seraphicadvisors",
+        "Get help": "https://github.com/p-stoneone/SeraAI-Streamlit",
+        "Report a bug": "https://github.com/p-stoneone/SeraAI-Streamlit",
         "About": """
             ## SeraAI Tool - Streamlit Assistant
             ### Powered using Gemini Model
-            **GitHub**: https://github.com/p-stoneone/seraphicadvisors
+            **GitHub**: https://github.com/p-stoneone/SeraAI-Streamlit
             This tool is created to manage all the backend tasks of SeraAI at single place.
         """
     }
