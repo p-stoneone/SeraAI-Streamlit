@@ -101,6 +101,11 @@ def display_sidebar():
     st.sidebar.markdown("---") 
     st.sidebar.title("Choose Model")
 
+# Reset Function
+def reset_app():
+    st.session_state.clear()
+    st.rerun()
+
 # --- Streamlit App Configuration ---
 st.set_page_config(
     page_title="SeraAI - Streamlined Tool",
@@ -123,6 +128,10 @@ display_sidebar()
 
 # Title of the App
 st.title("SeraAI - Streamlined Tool")
+
+# Reset button
+if st.button("Reset", key="reset_button"):
+    reset_app()
 
 # --- Authentication ---
 if "newsletter_authenticated" not in st.session_state:

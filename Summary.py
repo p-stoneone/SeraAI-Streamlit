@@ -241,19 +241,7 @@ def process_pdf_turbo(file):
         }
     return False
 
-def reset_app():
-    st.session_state.uploaded_files = []
-    st.session_state.summaries = {}
-    st.session_state.problematic_files = {}
-    st.session_state.processed = False
-    st.session_state.merged_json = None
-    st.rerun()  # Force a rerun to reset the UI
-
 def main():
-
-    # Reset button
-    if st.button("Reset", key="reset_button"):
-        reset_app()
 
     with st.expander("Upload PDF Files"):
         uploaded_files = st.file_uploader("Upload PDF files", type="pdf", accept_multiple_files=True)

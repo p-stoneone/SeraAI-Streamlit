@@ -507,26 +507,7 @@ def schedule_newsletter(newsletter_title, newsletter_body):
             return True
     return False
 
-# Reset function
-def reset_app():
-    st.session_state.pdf_files = []
-    st.session_state.processed_files = set()
-    st.session_state.summaries = {}
-    st.session_state.problematic_files = {}
-    st.session_state.processed = False
-    st.session_state.merged_json = None
-    st.session_state.newsletter_content = None
-    st.session_state.newsletter_title = None
-    st.session_state.newsletter_body = None
-    st.session_state.mongodb_articles = []
-    st.session_state.fetched_pdfs = []
-    st.rerun() # Force a rerun to reset the UI
-
 def main():
-
-    # Reset button
-    if st.button("Reset", key="reset_button"):
-        reset_app()
 
     with st.expander("Fetch Articles"):
         fetch_date = st.date_input("Select upload date to fetch PDFs from website", key="fetch_date")
