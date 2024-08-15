@@ -14,77 +14,6 @@ from datetime import datetime, timedelta
 # import logging
 # logging.basicConfig(level=logging.INFO)
 
-# Password hashing function
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
-
-# Initialize session state for login attempts and block time
-if 'login_attempts' not in st.session_state:
-    st.session_state.login_attempts = {}
-
-# Check if the password is correct and handle rate limiting
-def check_password():
-    """Returns `True` if the user had the correct password."""
-    
-    # Get the user's IP address (in Streamlit Cloud, this would be the client's IP)
-    ip = '127.0.0.1'  # Placeholder IP for local testing
-    
-    # Check if the IP is blocked
-    if ip in st.session_state.login_attempts:
-        last_attempt, attempts, block_time = st.session_state.login_attempts[ip]
-        if block_time and datetime.now() < block_time:
-            remaining_time = (block_time - datetime.now()).total_seconds() / 3600
-            st.error(f"Too many failed attempts. Please try again in {remaining_time:.2f} hours.")
-            return False
-        elif block_time and datetime.now() >= block_time:
-            # Reset attempts after block time
-            st.session_state.login_attempts[ip] = (datetime.now(), 0, None)
-
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        if hash_password(st.session_state["password"]) == st.secrets["PASSWORD"]:
-            st.session_state["password_correct"] = True
-            # Reset login attempts on successful login
-            st.session_state.login_attempts[ip] = (datetime.now(), 0, None)
-            # Set a session token
-            st.session_state["session_token"] = hashlib.sha256(os.urandom(24).hex().encode()).hexdigest()
-            del st.session_state["password"]  # Don't store the password.
-        else:
-            st.session_state["password_correct"] = False
-            # Increment failed attempts
-            last_attempt, attempts, _ = st.session_state.login_attempts.get(ip, (datetime.now(), 0, None))
-            attempts += 1
-            if attempts >= 5:
-                block_time = datetime.now() + timedelta(hours=6)
-                st.session_state.login_attempts[ip] = (datetime.now(), attempts, block_time)
-                st.error("Too many failed attempts. You are blocked for 6 hours.")
-            else:
-                st.session_state.login_attempts[ip] = (datetime.now(), attempts, None)
-                st.error(f"😕 Password incorrect. Attempt {attempts} of 5.")
-
-    # First run, show input for password.
-    if "password_correct" not in st.session_state:
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        return False
-    
-    # Password incorrect, show input + error.
-    elif not st.session_state["password_correct"]:
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        return False
-    
-    # Password correct.
-    else:
-        # Check if session token exists and is valid
-        if "session_token" not in st.session_state:
-            st.session_state["password_correct"] = False
-            return False
-        return True
-
-
 # Configure the Generative AI model
 GOOGLE_API_KEY = st.secrets["GEMINI_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -98,18 +27,6 @@ MONGODB_URI = st.secrets["MONGODB_URI"]
 MAX_RETRIES = 3
 RETRY_DELAY = 2  # seconds
 MAX_CHUNK_SIZE = 8000  # characters
-
-# Initialize session state
-if 'uploaded_files' not in st.session_state:
-    st.session_state.uploaded_files = []
-if 'summaries' not in st.session_state:
-    st.session_state.summaries = {}
-if 'problematic_files' not in st.session_state:
-    st.session_state.problematic_files = {}
-if 'processed' not in st.session_state:
-    st.session_state.processed = False
-if 'merged_json' not in st.session_state:
-    st.session_state.merged_json = None
 
 def extract_text_from_pdf(file):
     try:
@@ -333,10 +250,6 @@ def reset_app():
     st.rerun()  # Force a rerun to reset the UI
 
 def main():
-
-    # Password protection
-    if not check_password():
-        st.stop()  # Don't run the rest of the app.
 
     # Reset button
     if st.button("Reset", key="reset_button"):
