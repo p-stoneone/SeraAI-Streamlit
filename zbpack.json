@@ -1,5 +1,5 @@
 {
     "streamlit": {
-        "entry": "Model.py"
+        "entry": "streamlit_app.py"
     }
 }
