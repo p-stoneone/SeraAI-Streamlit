@@ -2,3 +2,4 @@ streamlit
 google-generativeai
 pymongo
 PyPDF2
+sib_api_v3_sdk
