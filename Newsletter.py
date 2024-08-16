@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 from bson import json_util
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 import google.generativeai as genai
 import hashlib
 import json
@@ -18,9 +17,6 @@ import streamlit as st
 import tempfile
 import textwrap
 import time
-
-# Load environment variables
-load_dotenv()
 
 # Note: Enable comments to access logging
 # Configure logging
