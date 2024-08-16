@@ -141,7 +141,7 @@ if "summary_authenticated" not in st.session_state:
 
 if not (st.session_state["newsletter_authenticated"] or st.session_state["summary_authenticated"]):
     st.sidebar.markdown("---") 
-    st.sidebar.subheader("Authentication")
+    # st.sidebar.subheader("Authentication")
     password_input = st.text_input("Password", type="password", key="password")
     if st.button("Authenticate"):
         if password_input:
