@@ -461,7 +461,7 @@ def schedule_newsletter(newsletter_title, newsletter_body):
 
     # Template selection
     templates = get_templates()
-    selected_template = st.selectbox("Select a template", templates, format_func=lambda x: x[1])
+    selected_template = st.selectbox("Select a template", templates, format_func=lambda x: x[1], index=1)
 
     if selected_template:
         template_html = preview_template(selected_template[0])

@@ -1,7 +1,8 @@
 import streamlit as st
 import base64
-import Summary  # Import your Model.py module
-import Newsletter  # Import your SeraAI.py module
+import Summary  # Import your Summary.py module
+import Newsletter  # Import your Newsletter.py module
+import Weekly  # Import your Weekly.py module
 import hashlib
 from datetime import datetime, timedelta
 
@@ -21,7 +22,6 @@ def get_client_ip():
             return "127.0.0.1"  # Return localhost if not found
     except Exception:
         return "127.0.0.1"  # Return localhost if an error occurs
-
 def check_password(password):
     """Handles password authentication with rate limiting."""
     ip = get_client_ip()  # Get user's IP address (for both local testing & Streamlit Cloud)
@@ -38,16 +38,17 @@ def check_password(password):
             # Reset attempts after block time
             del login_attempts[ip]
 
-    hashed_password = hash_password(password) 
+    hashed_password = hash_password(password)
 
     # Check password against both models
     if hashed_password == st.secrets["NEWSLETTER_PASSWORD"]:
         st.session_state["newsletter_authenticated"] = True
-        return "Newsletter Model"
+        st.session_state["weekly_authenticated"] = True
+        return "Full Access"
     elif hashed_password == st.secrets["SUMMARY_PASSWORD"]:
         st.session_state["summary_authenticated"] = True
         return "Summary Model"
-    else: 
+    else:
         # Increment failed attempts
         last_attempt, attempts, _ = login_attempts.get(ip, (datetime.now(), 0, None))
         attempts += 1
@@ -136,11 +137,13 @@ if st.button("Reset", key="reset_button"):
 # --- Authentication ---
 if "newsletter_authenticated" not in st.session_state:
     st.session_state["newsletter_authenticated"] = False
+if "weekly_authenticated" not in st.session_state:
+    st.session_state["weekly_authenticated"] = False
 if "summary_authenticated" not in st.session_state:
     st.session_state["summary_authenticated"] = False
 
-if not (st.session_state["newsletter_authenticated"] or st.session_state["summary_authenticated"]):
-    st.sidebar.markdown("---") 
+if not (st.session_state["newsletter_authenticated"] or st.session_state["weekly_authenticated"] or st.session_state["summary_authenticated"]):
+    st.sidebar.markdown("---")
     # st.sidebar.subheader("Authentication")
     password_input = st.text_input("Password", type="password", key="password")
     if st.button("Authenticate"):
@@ -150,8 +153,8 @@ if not (st.session_state["newsletter_authenticated"] or st.session_state["summar
                 st.success(f"Authenticated to {authenticated_model}!")
 
                 # Reinitialize session state for the authenticated model
-                if authenticated_model == "Newsletter Model":
-                    # Initialize Newsletter model session state 
+                if authenticated_model == "Full Access":
+                    # Initialize Newsletter and Weekly model session states
                     if 'pdf_files' not in st.session_state:
                         st.session_state.pdf_files = []
                         st.session_state.fetched_pdfs = []
@@ -164,7 +167,7 @@ if not (st.session_state["newsletter_authenticated"] or st.session_state["summar
                         st.session_state.newsletter_title = None
                         st.session_state.newsletter_body = None
                         st.session_state.mongodb_articles = []
-                    # ... initialize other Newsletter variables
+                    # Initialize Weekly model session state here if needed
                 elif authenticated_model == "Summary Model":
                     # Initialize Summary model session state
                     if 'uploaded_files' not in st.session_state:
@@ -179,17 +182,21 @@ if not (st.session_state["newsletter_authenticated"] or st.session_state["summar
                 st.sidebar.warning("Authentication required.")
 
 # --- Model Selection (After Authentication) ---
-if st.session_state["newsletter_authenticated"] or st.session_state["summary_authenticated"]:
-    selected_model = st.sidebar.radio(
-        "Select Model:", 
-        ("Newsletter Model", "Summary Model"),
-        index = 0 if st.session_state["newsletter_authenticated"] else 1 # Sets the pre-selected index 
-    )
+if st.session_state["newsletter_authenticated"] or st.session_state["weekly_authenticated"] or st.session_state["summary_authenticated"]:
+    model_options = []
+    if st.session_state["newsletter_authenticated"]:
+        model_options.extend(["Daily Newsletter Model", "Weekly Newsletter Model"])
+    if st.session_state["summary_authenticated"]:
+        model_options.append("Summary Model")
+    
+    selected_model = st.sidebar.radio("Select Model:", model_options)
 
     # --- Model Routing ---
-    if selected_model == "Newsletter Model" and st.session_state["newsletter_authenticated"]:
+    if selected_model == "Daily Newsletter Model" and st.session_state["newsletter_authenticated"]:
         Newsletter.main()
+    elif selected_model == "Weekly Newsletter Model" and st.session_state["weekly_authenticated"]:
+        Weekly.main()
     elif selected_model == "Summary Model" and st.session_state["summary_authenticated"]:
         Summary.main()
-    else: 
+    else:
         st.sidebar.warning("Required Authentication to access this model.")
