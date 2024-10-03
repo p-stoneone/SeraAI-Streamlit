@@ -74,7 +74,7 @@ def generate_newsletter(case_summaries, start_date, end_date):
             <title>Weekly Supreme Court Insights: [Start Date] - [End Date]</title>
         </head>
         <body>
-            <h2 style="text-align: left; color:black;">Highlight of the Week</h2>
+            <h2 style="text-align: left; color:black;">Supreme Court Judgments - Highlights from last week</h2>
             <h3 style="text-align: left; color:black;">[Most Impactful Case Title]</h3>
             <p style="text-align: left; color:black;">[Brief summary and key insights of the most impactful case]</p>
             <p style="text-align:left;">[Name of APPELLANT VS Name of RESPONDENTS, decided on DD-MM-YYYY]</p>
